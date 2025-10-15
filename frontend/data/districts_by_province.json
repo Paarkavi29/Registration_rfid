@@ -1,0 +1,11 @@
+{
+  "Central": ["Kandy","Matale","Nuwara Eliya"],
+  "Eastern": ["Trincomalee","Batticaloa","Ampara"],
+  "North Central": ["Anuradhapura","Polonnaruwa"],
+  "Northern": ["Jaffna","Kilinochchi","Mannar","Vavuniya","Mullaitivu"],
+  "North Western": ["Kurunegala","Puttalam"],
+  "Sabaragamuwa": ["Ratnapura","Kegalle"],
+  "Southern": ["Galle","Matara","Hambantota"],
+  "Uva": ["Badulla","Monaragala"],
+  "Western": ["Colombo","Gampaha","Kalutara"]
+}
