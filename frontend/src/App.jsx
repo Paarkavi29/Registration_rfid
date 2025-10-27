@@ -87,7 +87,7 @@ export default function App() {
       <header>
         <h1>RFID Registration System</h1>
         <div className="pill">
-          <span className="small">Health: {health}</span>
+          <span className="small">Health:{health}</span>
         </div>
       </header>
 

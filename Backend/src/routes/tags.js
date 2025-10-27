@@ -368,5 +368,28 @@ router.post("/rfidRead", async (req, res) => {
   }
 });
 
+router.post('/logs', async (req, res) => {
+  const { portal, rfid_card_id, label } = req.body;
+
+  if (!portal || !rfid_card_id || !label) {
+    return res.status(400).json({ error: 'Missing required fields' });
+  }
+
+  try {
+    const query = `
+      INSERT INTO logs (portal, rfid_card_id, label)
+      VALUES ($1, $2, $3)
+      RETURNING *;
+    `;
+    const values = [portal, rfid_card_id, label];
+
+    const result = await pool.query(query, values);
+    res.status(201).json({ message: 'Log inserted successfully', log: result.rows[0] });
+  } catch (error) {
+    console.error('Error inserting log:', error);
+    res.status(500).json({ error: 'Database insert failed' });
+  }
+});
+
 
 module.exports = router;

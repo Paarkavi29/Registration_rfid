@@ -17,15 +17,19 @@ export default function AdminPortal() {
           api('/api/tags/admin/registrations'),
           api('/api/tags/list-cards'),
         ]);
+
+        console.log(regs);
+        console.log(rfid);
         setRegistrations(regs || []);
         setCards(rfid || []);
       } catch (e) {
         setMsg(e.message || 'Failed to load admin data');
+        console.log(e.message)
       } finally {
         setLoading(false);
       }
     }
-    load();
+     load();
   }, []);
 
   const computed = useMemo(() => {
@@ -64,7 +68,7 @@ export default function AdminPortal() {
   }
 
   return (
-    <div className="card" style={{ padding: 12 }}>
+    <div className="card" style={{ padding: 12}}>
       <h3 style={{ marginTop: 0 }}>Admin Portal</h3>
 
       {msg && <div className="small mut" style={{ marginBottom: 10 }}>{msg}</div>}
@@ -117,7 +121,7 @@ export default function AdminPortal() {
         <table style={{ width: '100%', borderCollapse: 'collapse' }}>
           <thead>
             <tr>
-              <th>#</th>
+              <th>Count</th>
               <th>ID</th>
               <th>Portal</th>
               <th>Type</th>
