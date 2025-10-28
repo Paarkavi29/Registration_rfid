@@ -182,10 +182,10 @@ export default function RegistrationFlow({ selectedPortal, onRegistrationComplet
   const handleIndividualSubmit = async (e) => {
     e.preventDefault();
     
-    if (!selectedProvince || !selectedDistrict || !ageRange || !sex || !language) {
+   /* if (!selectedProvince || !selectedDistrict || !ageRange || !sex || !language) {
       setMsg("Please fill in all required fields");
       return;
-    }
+    }*/
 
     setBusy(true);
     setMsg('');
@@ -263,10 +263,10 @@ export default function RegistrationFlow({ selectedPortal, onRegistrationComplet
       };
     }
 
-    if (!isValid) {
-      setMsg("Please fill in all required fields");
-      return;
-    }
+    // if (!isValid) {
+    //   setMsg("Please fill in all required fields");
+    //   return;
+    // }
 
     // Move to RFID tap count step instead of asking for manual count
     setPendingBatchPayload(payload);
