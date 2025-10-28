@@ -1,7 +1,7 @@
 
-const express = require('express');
+const express = require('express'); //Express framework for routing
 const router = express.Router();
-const pool = require('../db/pool');
+const pool = require('../db/pool'); // postgreSQL connection pool
 
 // ===================================================================
 // GET /api/admin/registrations
@@ -10,19 +10,22 @@ const pool = require('../db/pool');
 router.get('/admin/registrations', async (_req, res) => {
   try {
     const result = await pool.query('SELECT * FROM registration ORDER BY id DESC');
-    res.status(200).json(result.rows);
+    res.status(200).json(result.rows);  //send back as JSON
   } catch (e) {
-    return handleError(res, e);
+    return handleError(res, e); //use common error handler
   }
 });
+
 // Utility: Ensure all REGISTERed cards in logs are present in rfid_cards
 async function syncRfidCardsFromLogs() {
   try {
     const { rows } = await pool.query(`SELECT DISTINCT rfid_card_id, portal FROM logs WHERE label = 'REGISTER'`);
     for (const row of rows) {
       const { rfid_card_id, portal } = row;
+      //check if card exists
       const exists = await pool.query(`SELECT 1 FROM rfid_cards WHERE rfid_card_id = $1`, [rfid_card_id]);
       if (exists.rowCount === 0) {
+        //insert as available if not present
         await pool.query(`INSERT INTO rfid_cards (rfid_card_id, status, portal) VALUES ($1, 'available', $2)`, [rfid_card_id, portal]);
       }
     }
@@ -38,10 +41,13 @@ async function syncRfidCardsFromLogs() {
 // ===================================================================
 router.post('/updateCount', async (req, res) => {
   const { portal, count } = req.body || {};
+
+  // input validation
   if (!portal) return badReq(res, 'Portal is required');
   if (!count || isNaN(count) || count < 1) return badReq(res, 'Count must be >= 1');
+
   try {
-    // Update the latest registration for this portal
+    // Update the group size of latest registration for this portal
     const result = await pool.query(
       `UPDATE registration
        SET group_size = $1
@@ -75,23 +81,29 @@ router.post('/register', async (req, res) => {
     lang = null
   } = req.body || {};
 
+  // input validation
   if (!portal) return badReq(res, 'Portal is required');
   if (!group_size || isNaN(group_size) || group_size < 1) return badReq(res, 'Group size must be >= 1');
 
   try {
-    await syncRfidCardsFromLogs();
+    await syncRfidCardsFromLogs();  //sync cards from logs
     const result = await pool.query(
       `INSERT INTO registration (portal, group_size, school, university, province, district, age_range, sex, lang)
        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
        RETURNING id`,
       [portal, group_size, school, university, province, district, age_range, sex, lang]
     );
+
+    //Return the new registration ID
     return res.status(200).json({ id: result.rows[0].id });
   } catch (e) {
     return handleError(res, e);
   }
 });
 
+// =======================================================
+// Custom error handler
+// =======================================================
 function handleError(res, err) {
   // Log full error for debugging
   console.error('[API ERROR]', err && err.stack ? err.stack : err);
@@ -99,6 +111,8 @@ function handleError(res, err) {
   if (err && err.message) {
     console.error('[API ERROR MESSAGE]', err.message);
   }
+
+  //Map common errors to HTTP status codes
   const msg = String(err?.message || err || '');
   if (/^Leader\s+not\s+found$/i.test(msg)) return res.status(404).json({ error: 'Leader not found' });
   if (/^Tag\s+already\s+assigned$/i.test(msg)) return res.status(409).json({ error: 'Tag already assigned' });
@@ -122,7 +136,9 @@ async function getLastRegisterLogAvailableTag(portal) {
       LIMIT 1`,
     [portal]
   );
+
   let tagId;
+  
   if (rows.length === 0) {
     // No card tapped for registration
     throw new Error('No card tapped for registration');
@@ -138,32 +154,7 @@ async function getLastRegisterLogAvailableTag(portal) {
   }
   return tagId;
 }
-async function getLastTagFromDB(wantedLabels, portal) {
-// Helper: Get the latest available tag for a portal
-async function getLastAvailableTagFromDB(portal) {
-  const { rows } = await pool.query(
-    `SELECT rfid_card_id
-       FROM rfid_cards
-      WHERE portal = $1 AND status = 'available'
-      ORDER BY rfid_card_id DESC
-      LIMIT 1`,
-    [portal]
-  );
-  if (rows.length === 0) throw new Error('No available tag for this portal');
-  return rows[0].rfid_card_id;
-}
-  const { rows } = await pool.query(
-    `SELECT rfid_card_id
-       FROM logs
-      WHERE label = ANY($1)
-        AND portal = $2
-      ORDER BY log_time DESC
-      LIMIT 1`,
-    [wantedLabels, portal]
-  );
-  if (rows.length === 0) throw new Error('No matching entry in log');
-  return rows[0].rfid_card_id;
-}
+
 
 // ---------- DB helpers ----------
 async function lockOrCreateCard(client, tagId, portal) {
@@ -334,7 +325,7 @@ async function checkAndReleaseOnNewExitout() {
 }
 
 
-setInterval(checkAndReleaseOnNewExitout, 3000);
+setInterval(checkAndReleaseOnNewExitout, 4000);
 
 // Hardware Site Setup Instructions
 // Reader Software:
