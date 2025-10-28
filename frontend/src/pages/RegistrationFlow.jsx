@@ -408,7 +408,7 @@ export default function RegistrationFlow({ selectedPortal, onRegistrationComplet
     <div>
       <h3 style={{ marginTop: 0 }}>Individual Registration</h3>
       <div style={{ display: 'flex', gap: 8, marginBottom: 12 }}>
-        <button type="button" className="btn" onClick={handleBack}>Back</button>
+        <button type="button" className="btn" onClick={() => setCurrentStep('type-selection')}>Back</button>
       </div>
 
       <form onSubmit={handleIndividualSubmit}>
@@ -504,7 +504,7 @@ export default function RegistrationFlow({ selectedPortal, onRegistrationComplet
     <div>
       <h3 style={{ marginTop: 0 }}>Batch Registration</h3>
       <div style={{ display: 'flex', gap: 8, marginBottom: 12 }}>
-        <button type="button" className="btn" onClick={handleBack}>Back</button>
+        <button type="button" className="btn" onClick={() => setCurrentStep('type-selection')}>Back</button>
       </div>
 
       <form onSubmit={handleBatchSubmit}>
