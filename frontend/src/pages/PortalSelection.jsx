@@ -26,7 +26,7 @@ export default function PortalSelection({ onPortalSelect }) {
         Choose which portal you want to access
       </p>
 
-      <div style={{ display: 'grid', gap: '15px', marginBottom: '30px' }}>
+      <div style={{ display: 'grid', gap: '15px', marginBottom: '30px' ,  textAlign: 'center' }}>
         {portals.map(portal => (
           <div
             key={portal.id}
