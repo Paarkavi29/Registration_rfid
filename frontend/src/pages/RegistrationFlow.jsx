@@ -275,6 +275,8 @@ export default function RegistrationFlow({ selectedPortal, onRegistrationComplet
     setCurrentStep('batch-count');
   };
 
+
+  //Paarkavi
   // Only increment batchCount after successful backend assignment
   const handleRfidTap = async () => {
     setBusy(true);

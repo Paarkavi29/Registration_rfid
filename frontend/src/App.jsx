@@ -6,6 +6,7 @@ import RegistrationFlow from './pages/RegistrationFlow';
 import TagAssignment from './pages/TagAssignment';
 import AuthPage from './pages/AuthPage';
 import { useAuth } from './auth/AuthContext';
+import RfidLogInput from './pages/RfidLogInput';
 // AdminDashboard is navigated from RegistrationFlow when chosen
 
 export default function App() {
@@ -14,6 +15,13 @@ export default function App() {
   const [currentView, setCurrentView] = useState('portal-selection'); // portal-selection, registration, tag-assignment, admin
   const [selectedPortal, setSelectedPortal] = useState(localStorage.getItem('portal') || '');
   const [registrationData, setRegistrationData] = useState(null);
+
+  // Check if we should show the RFID log input page based on URL
+  useEffect(() => {
+    if (window.location.pathname === '/rfid') {
+      setCurrentView('rfid-log');
+    }
+  }, []);
 
   async function refreshHealth() {
     try {
@@ -80,6 +88,8 @@ export default function App() {
         );
       case 'admin':
         return <AdminDashboard onBack={handleBackToPortalSelection} />;
+      case 'rfid-log':
+        return <RfidLogInput />;
       default:
         return <PortalSelection onPortalSelect={handlePortalSelect} />;
     }

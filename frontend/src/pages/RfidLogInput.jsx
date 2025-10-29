@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { api } from '../api';
 import '../form.css';
 
@@ -12,8 +12,6 @@ export default function RfidLogInput() {
   const [busy, setBusy] = useState(false);
   const [cards, setCards] = useState([]);
   const [loadingCards, setLoadingCards] = useState(false);
-  const [autoRefresh, setAutoRefresh] = useState(false);
-  const refreshIntervalRef = useRef(null);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -62,40 +60,20 @@ export default function RfidLogInput() {
 
   const loadCards = async () => {
     setLoadingCards(true);
-    setMsg('');
     try {
       const data = await api('/api/tags/list-cards');
-      // data is expected to be an array of { rfid_card_id, status, portal }
       setCards(Array.isArray(data) ? data : []);
     } catch (err) {
       setMsg('❌ Failed to load cards: ' + err.message);
+      setCards([]);
     } finally {
       setLoadingCards(false);
     }
   };
 
   useEffect(() => {
-    // initial load
     loadCards();
-    return () => {
-      if (refreshIntervalRef.current) clearInterval(refreshIntervalRef.current);
-    };
   }, []);
-
-  useEffect(() => {
-    if (autoRefresh) {
-      // start polling every 5s
-      refreshIntervalRef.current = setInterval(loadCards, 5000);
-    } else {
-      if (refreshIntervalRef.current) {
-        clearInterval(refreshIntervalRef.current);
-        refreshIntervalRef.current = null;
-      }
-    }
-    return () => {
-      if (refreshIntervalRef.current) clearInterval(refreshIntervalRef.current);
-    };
-  }, [autoRefresh]);
 
   return (
     <div className="container" style={{ maxWidth: '500px', margin: '40px auto', padding: '20px' }}>
@@ -163,12 +141,9 @@ export default function RfidLogInput() {
       </form>
 
       <div style={{ marginTop: 28 }}>
-        <h3 style={{ marginBottom: 8 }}>RFID Cards</h3>
+        <h3 style={{ marginBottom: 8 }}>Available RFID Cards</h3>
         <div style={{ display: 'flex', gap: 8, alignItems: 'center', marginBottom: 12 }}>
           <button className="btn" onClick={loadCards} disabled={loadingCards}>Refresh</button>
-          <label style={{ display: 'flex', alignItems: 'center', gap: 8, marginLeft: 8 }}>
-            <input type="checkbox" checked={autoRefresh} onChange={e => setAutoRefresh(e.target.checked)} /> Auto-refresh (5s)
-          </label>
           <div style={{ flex: 1 }} />
           {loadingCards && <div className="mut">Loading…</div>}
         </div>
@@ -179,20 +154,18 @@ export default function RfidLogInput() {
               <tr>
                 <th style={{ textAlign: 'left', padding: '6px 8px', borderBottom: '1px solid #ddd' }}>Card ID</th>
                 <th style={{ textAlign: 'left', padding: '6px 8px', borderBottom: '1px solid #ddd' }}>Status</th>
-                <th style={{ textAlign: 'left', padding: '6px 8px', borderBottom: '1px solid #ddd' }}>Portal</th>
               </tr>
             </thead>
             <tbody>
               {cards.length === 0 && (
                 <tr>
-                  <td colSpan={3} style={{ padding: '10px 8px', color: '#666' }}>No cards found</td>
+                  <td colSpan={2} style={{ padding: '10px 8px', color: '#666' }}>No cards found</td>
                 </tr>
               )}
               {cards.map((c) => (
                 <tr key={c.rfid_card_id}>
                   <td style={{ padding: '8px', borderBottom: '1px solid #f1f1f1' }}>{c.rfid_card_id}</td>
-                  <td style={{ padding: '8px', borderBottom: '1px solid #f1f1f1' }}>{c.status}</td>
-                  <td style={{ padding: '8px', borderBottom: '1px solid #f1f1f1' }}>{c.portal || '-'}</td>
+                  <td style={{ padding: '8px', borderBottom: '1px solid #f1f1f1' }}>{c.status || '-'}</td>
                 </tr>
               ))}
             </tbody>
