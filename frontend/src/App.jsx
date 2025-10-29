@@ -95,10 +95,10 @@ export default function App() {
   return (
     <>
       <header>
-        <h1>RFID Registration System</h1>
-        <div className="pill">
+        <h1 >Welcome to Registration Portal</h1>
+        {/* <div className="pill">
           <span className="small">Health: {health}</span>
-        </div>
+        </div> */}
       </header>
 
       <main style={{ maxWidth: '1100px', margin: '24px auto', padding: '0 16px' }}>

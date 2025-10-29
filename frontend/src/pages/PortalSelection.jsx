@@ -26,19 +26,24 @@ export default function PortalSelection({ onPortalSelect }) {
         Choose which portal you want to access
       </p>
 
-      <div style={{ display: 'grid', gap: '15px', marginBottom: '30px' ,  textAlign: 'center' }}>
+      <div style={{ display: 'grid', gap: '15px', marginBottom: '30px' ,  textAlign: 'center', alignItems: 'center', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))' }}>
         {portals.map(portal => (
           <div
             key={portal.id}
             className={`portal-card ${selectedPortal === portal.id ? 'selected' : ''}`}
             onClick={() => handlePortalSelect(portal.id)}
             style={{
-              padding: '20px',
+              fontSize: '50px',
+              display: 'flex',
+              flexDirection: 'column',
+              padding: '100px',
+              width: '400px',
+              alignItems: 'center',
               border: selectedPortal === portal.id ? '2px solid var(--pri)' : '1px solid #2a375d',
-              borderRadius: '12px',
+              borderRadius: '500px',
               background: selectedPortal === portal.id ? '#0c2b55' : '#0f182d',
               cursor: 'pointer',
-              transition: 'all 0.2s ease'
+              transition: 'all 0.2s ease',
             }}
           >
             <h3 style={{ margin: '0 0 8px 0', color: selectedPortal === portal.id ? 'var(--pri)' : '#e6eefc' }}>
@@ -56,7 +61,7 @@ export default function PortalSelection({ onPortalSelect }) {
           className="btn primary" 
           onClick={handleContinue}
           disabled={!selectedPortal}
-          style={{ padding: '12px 30px', fontSize: '16px' }}
+          style={{ padding: '12px 30px', fontSize: '16px' , alignItems: 'center' }}
         >
           Continue
         </button>

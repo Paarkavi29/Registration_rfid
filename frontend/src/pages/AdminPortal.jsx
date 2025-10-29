@@ -70,34 +70,34 @@ export default function AdminPortal() {
       {msg && <div className="small mut" style={{ marginBottom: 10 }}>{msg}</div>}
 
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 8, marginBottom: 10 }}>
-        <div className="card" style={{ padding: 10 }}>
+        <div className="card1" style={{ padding: 10 }}>
           <div className="small mut">Total Records</div>
           <div style={{ fontSize: 18, fontWeight: 700 }}>{computed.totalRecords}</div>
         </div>
-        <div className="card" style={{ padding: 10 }}>
+        <div className="card1" style={{ padding: 10 }}>
           <div className="small mut">Total People</div>
           <div style={{ fontSize: 18, fontWeight: 700 }}>{computed.totalPeople}</div>
         </div>
-        <div className="card" style={{ padding: 10 }}>
+        <div className="card1" style={{ padding: 10 }}>
           <div className="small mut">Individuals (general)</div>
           <div style={{ fontSize: 18, fontWeight: 700 }}>{computed.byType.general || 0}</div>
         </div>
-        <div className="card" style={{ padding: 10 }}>
+        <div className="card1" style={{ padding: 10 }}>
           <div className="small mut">Batches (school+univ)</div>
           <div style={{ fontSize: 18, fontWeight: 700 }}>{(computed.byType.school || 0) + (computed.byType.university || 0)}</div>
         </div>
       </div>
 
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 8, marginBottom: 10 }}>
-        <div className="card" style={{ padding: 10 }}>
+        <div className="card1" style={{ padding: 10 }}>
           <div className="small mut">Total RFID Tags</div>
           <div style={{ fontSize: 18, fontWeight: 700 }}>{computed.totalTags}</div>
         </div>
-        <div className="card" style={{ padding: 10 }}>
+        <div className="card1" style={{ padding: 10 }}>
           <div className="small mut">Available Tags</div>
           <div style={{ fontSize: 18, fontWeight: 700 }}>{computed.availableTags}</div>
         </div>
-        <div className="card" style={{ padding: 10 }}>
+        <div className="card1" style={{ padding: 10 }}>
           <div className="small mut">Assigned Tags</div>
           <div style={{ fontSize: 18, fontWeight: 700 }}>{computed.assignedTags}</div>
         </div>

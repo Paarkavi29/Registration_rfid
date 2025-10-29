@@ -1,5 +1,5 @@
 :root { 
-  --bg:#0b1324;
+  --bg:#19285d;
   --card:#141b2d; 
   --mut:#9fb0d0; 
   --pri:#4da3ff; 
@@ -24,26 +24,25 @@ header{
 }
 header h1{
   margin:0;
-  font-size:18px
+  font-size:50px;
+  width: 100%;
+  text-align: center;
 }
+
+
 
 
 main{
   max-width:1100px;
-  margin:24px auto;
+  margin:24px 24px;
   padding:0 16px;
 }
-
-main{
-  max-width:1100px;
-  margin:24px auto;
-  padding:0 16px;
-}
-.card{
+.card1{
   background:var(--card);
   border:1px solid #1f2942;
-  border-radius:14px;
-  padding:16px
+  border-radius:100px;
+  padding:116px;
+  
 }
 
 .mut{
@@ -72,15 +71,23 @@ main{
   padding:3px 8px;
   border-radius:999px;
   background:#0d1426;
- .btn{
+.btn{
   appearance:none;
   border:1px solid #2a375d;
   background:#0f182d;color:#e6eefc;
-  padding:10px 14px;
-  border-radius:10px;
+  padding:14px 18px;
+  border-radius:12px;
   cursor:pointer;
   font-weight:600;
+  font-size:16px;
   transition: all 0.2s ease;
+}
+
+/* Larger button variant for prominent actions */
+.btn.lg{
+  padding:16px 24px;
+  font-size:18px;
+  border-radius:14px;
 }
 
 .btn:disabled{

@@ -182,10 +182,10 @@ export default function RegistrationFlow({ selectedPortal, onRegistrationComplet
   const handleIndividualSubmit = async (e) => {
     e.preventDefault();
     
-    if (!selectedProvince || !selectedDistrict || !ageRange || !sex || !language) {
+   /* if (!selectedProvince || !selectedDistrict || !ageRange || !sex || !language) {
       setMsg("Please fill in all required fields");
       return;
-    }
+    }*/
 
     setBusy(true);
     setMsg('');
@@ -263,10 +263,10 @@ export default function RegistrationFlow({ selectedPortal, onRegistrationComplet
       };
     }
 
-    if (!isValid) {
-      setMsg("Please fill in all required fields");
-      return;
-    }
+    // if (!isValid) {
+    //   setMsg("Please fill in all required fields");
+    //   return;
+    // }
 
     // Move to RFID tap count step instead of asking for manual count
     setPendingBatchPayload(payload);
@@ -375,10 +375,13 @@ export default function RegistrationFlow({ selectedPortal, onRegistrationComplet
 
   const renderTypeSelection = () => (
     <div>
-      <h3 style={{ marginTop: 0 }}>Registration Type</h3>
-      <div className="small mut" style={{ marginBottom: 12 }}>Portal: <b>{selectedPortal}</b></div>
-      <label style={{ display: 'block', marginBottom: 6 }}>Select Registration Type</label>
-      <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+      <h3 style={{ marginTop: 0, textAlign:'center',fontSize:20 }}>Registration Type</h3>
+      <div className="small mut" style={{ marginBottom: 12 ,textAlign:'center'}}>Portal: <b>{selectedPortal}</b></div>
+      <label style={{ display: 'block', marginBottom: 6,textAlign:'center' }}>Select Registration Type</label>
+      <div style={{ display: 'grid', flexDirection: 'column', gap: 15, alignItems: 'center', margin: '0 auto 30px', width: 800}}>
+        <div style={{ display: 'flex', gap: 8, marginBottom: 12 }}>
+          <button type="button" className="btn" onClick={handleBack} >Back</button>
+        </div>
         <button
           type="button"
           className={`btn ${registrationType === 'individual' ? 'primary' : ''}`}
@@ -400,9 +403,7 @@ export default function RegistrationFlow({ selectedPortal, onRegistrationComplet
         >
           Admin Portal
         </button>
-        <div style={{ flex: 1 }} />
-        <button type="button" className="btn" onClick={handleBack}>Back</button>
-      </div>
+        </div>
     </div>
   );
 
@@ -491,7 +492,7 @@ export default function RegistrationFlow({ selectedPortal, onRegistrationComplet
           ))}
         </div>
 
-        <button type="submit" className="btn primary" disabled={busy}>
+        <button type="submit" className="btn lg primary" disabled={busy}>
           Register
         </button>
       </form>
@@ -622,7 +623,7 @@ export default function RegistrationFlow({ selectedPortal, onRegistrationComplet
           </>
         )}
 
-        <button type="submit" className="btn primary" disabled={busy}>
+        <button type="submit" className="btn lg primary" disabled={busy}>
           Continue to RFID Count
         </button>
       </form>
@@ -646,11 +647,11 @@ export default function RegistrationFlow({ selectedPortal, onRegistrationComplet
       </div>
 
       <div style={{ textAlign: 'center', marginBottom: 20 }}>
-        <button className="btn primary" onClick={handleRfidTap} disabled={busy}>Tap RFID Card</button>
+        <button className="btn lg primary" onClick={handleRfidTap} disabled={busy}>Tap RFID Card</button>
       </div>
 
       <div style={{ textAlign: 'center' }}>
-        <button className="btn ok" onClick={handleBatchCountComplete} disabled={busy || batchCount === 0}>
+        <button className="btn lg ok" onClick={handleBatchCountComplete} disabled={busy || batchCount === 0}>
           Complete Registration ({batchCount})
         </button>
       </div>
