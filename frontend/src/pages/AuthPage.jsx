@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import './auth.css';
+import '../auth.css';
 import { useAuth } from '../auth/AuthContext';
 
 export default function AuthPage() {

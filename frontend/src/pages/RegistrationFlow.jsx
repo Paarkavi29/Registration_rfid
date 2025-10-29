@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { api } from '../api';
 import SelectField from '../components/SelectField';
 import AdminPortal from './AdminPortal';
+import '../registration.css';
 
 // SearchableSelect component for school and university search
 const SearchableSelect = ({ label, options, value, onChange, disabled, placeholder }) => {
@@ -374,127 +375,156 @@ export default function RegistrationFlow({ selectedPortal, onRegistrationComplet
   }
 
   const renderTypeSelection = () => (
-    <div>
-      <h3 style={{ marginTop: 0, textAlign:'center',fontSize:20 }}>Registration Type</h3>
-      <div className="small mut" style={{ marginBottom: 12 ,textAlign:'center'}}>Portal: <b>{selectedPortal}</b></div>
-      <label style={{ display: 'block', marginBottom: 6,textAlign:'center' }}>Select Registration Type</label>
-      <div style={{ display: 'grid', flexDirection: 'column', gap: 15, alignItems: 'center', margin: '0 auto 30px', width: 800}}>
-        <div style={{ display: 'flex', gap: 8, marginBottom: 12 }}>
-          <button type="button" className="btn" onClick={handleBack} >Back</button>
+    <div className="type-wrap">
+      <div className="type-card">
+        <div className="type-head">
+          <div className="left">
+            <button type="button" className="btn" onClick={handleBack}>Back</button>
+          </div>
+          <div className="center">
+            <h3 className="type-title">Registration Type</h3>
+            <div className="mut small">Portal: <b>{selectedPortal || '—'}</b></div>
+          </div>
+          <div className="right" />
         </div>
-        <button
-          type="button"
-          className={`btn ${registrationType === 'individual' ? 'primary' : ''}`}
-          onClick={() => handleTypeSelection('individual')}
-        >
-          Individual Registration
-        </button>
-        <button
-          type="button"
-          className={`btn ${registrationType === 'batch' ? 'primary' : ''}`}
-          onClick={() => handleTypeSelection('batch')}
-        >
-          Batch Registration
-        </button>
-        <button
-          type="button"
-          className="btn"
-          onClick={() => setCurrentStep('admin')}
-        >
-          Admin Portal
-        </button>
+
+        <p className="mut" style={{ textAlign: 'center', marginTop: 4 }}>Select the workflow to continue</p>
+
+        <div className="choice-list">
+          <button
+            type="button"
+            className={`choice ${registrationType === 'individual' ? 'active' : ''}`}
+            onClick={() => handleTypeSelection('individual')}
+          >
+            <span className="choice-title">Individual Registration</span>
+            <span className="choice-sub">Register a single participant</span>
+          </button>
+
+          <button
+            type="button"
+            className={`choice ${registrationType === 'batch' ? 'active' : ''}`}
+            onClick={() => handleTypeSelection('batch')}
+          >
+            <span className="choice-title">Batch Registration</span>
+            <span className="choice-sub">Register a group from school or university</span>
+          </button>
+
+          <button
+            type="button"
+            className="choice"
+            onClick={() => setCurrentStep('admin')}
+          >
+            <span className="choice-title">Admin Portal</span>
+            <span className="choice-sub">Administrative tools and reports</span>
+          </button>
         </div>
+      </div>
     </div>
   );
 
   const renderIndividualForm = () => (
-    <div>
-      <h3 style={{ marginTop: 0 }}>Individual Registration</h3>
-      <div style={{ display: 'flex', gap: 8, marginBottom: 12 }}>
+    <div className="form-card">
+      <div className="left">
         <button type="button" className="btn" onClick={() => setCurrentStep('type-selection')}>Back</button>
       </div>
+      <div className="form-head">
+        <h3 className="form-title">Individual Registration</h3>
+        <div />
+      </div>
 
-      <form onSubmit={handleIndividualSubmit}>
-        <label>Province</label>
-        <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginBottom: 12 }}>
-          {provinces.map((province) => (
-            <button
-              key={province}
-              type="button"
-              className={`btn ${selectedProvince === province ? 'primary' : ''}`}
-              onClick={() => setSelectedProvince(province)}
-            >
-              {province}
-            </button>
-          ))}
+      <form onSubmit={handleIndividualSubmit} className="reg-form">
+        <div className="group">
+          <label className="group-label">Province</label>
+          <div className="chips">
+            {provinces.map((province) => (
+              <button
+                key={province}
+                type="button"
+                className={`chip ${selectedProvince === province ? 'active' : ''}`}
+                onClick={() => setSelectedProvince(province)}
+              >
+                {province}
+              </button>
+            ))}
+          </div>
         </div>
 
-        <SelectField
-          label="District"
-          options={districts.map((d) => ({ value: d, label: d }))}
-          value={selectedDistrict}
-          onChange={setSelectedDistrict}
-          disabled={!selectedProvince}
-        />
-
-        <label>Age Range</label>
-        <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginBottom: 12 }}>
-          {[
-            { value: "child", label: "Child" },
-            { value: "teenager", label: "Teenager" },
-            { value: "adult", label: "Adult" },
-            { value: "senior", label: "Senior" },
-          ].map((option) => (
-            <button
-              key={option.value}
-              type="button"
-              className={`btn ${ageRange === option.value ? 'primary' : ''}`}
-              onClick={() => setAgeRange(option.value)}
-            >
-              {option.label}
-            </button>
-          ))}
+        <div className="group">
+          <SelectField
+            label="District"
+            options={districts.map((d) => ({ value: d, label: d }))}
+            value={selectedDistrict}
+            onChange={setSelectedDistrict}
+            disabled={!selectedProvince}
+          />
         </div>
 
-        <label>Sex</label>
-        <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginBottom: 12 }}>
-          {[
-            { value: "male", label: "Male" },
-            { value: "female", label: "Female" },
-            { value: "other", label: "Other" },
-          ].map((option) => (
-            <button
-              key={option.value}
-              type="button"
-              className={`btn ${sex === option.value ? 'primary' : ''}`}
-              onClick={() => setSex(option.value)}
-            >
-              {option.label}
-            </button>
-          ))}
+        <div className="group">
+          <label className="group-label">Age Range</label>
+          <div className="chips">
+            {[
+              { value: "child", label: "Child" },
+              { value: "teenager", label: "Teenager" },
+              { value: "adult", label: "Adult" },
+              { value: "senior", label: "Senior" },
+            ].map((option) => (
+              <button
+                key={option.value}
+                type="button"
+                className={`chip ${ageRange === option.value ? 'active' : ''}`}
+                onClick={() => setAgeRange(option.value)}
+              >
+                {option.label}
+              </button>
+            ))}
+          </div>
         </div>
 
-        <label>Language</label>
-        <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginBottom: 12 }}>
-          {[
-            { value: "tamil", label: "Tamil" },
-            { value: "sinhala", label: "Sinhala" },
-            { value: "english", label: "English" },
-          ].map((option) => (
-            <button
-              key={option.value}
-              type="button"
-              className={`btn ${language === option.value ? 'primary' : ''}`}
-              onClick={() => setLanguage(option.value)}
-            >
-              {option.label}
-            </button>
-          ))}
+        <div className="group">
+          <label className="group-label">Sex</label>
+          <div className="chips">
+            {[
+              { value: "male", label: "Male" },
+              { value: "female", label: "Female" },
+              { value: "other", label: "Other" },
+            ].map((option) => (
+              <button
+                key={option.value}
+                type="button"
+                className={`chip ${sex === option.value ? 'active' : ''}`}
+                onClick={() => setSex(option.value)}
+              >
+                {option.label}
+              </button>
+            ))}
+          </div>
         </div>
 
-        <button type="submit" className="btn lg primary" disabled={busy}>
-          Register
-        </button>
+        <div className="group">
+          <label className="group-label">Language</label>
+          <div className="chips">
+            {[
+              { value: "tamil", label: "Tamil" },
+              { value: "sinhala", label: "Sinhala" },
+              { value: "english", label: "English" },
+            ].map((option) => (
+              <button
+                key={option.value}
+                type="button"
+                className={`chip ${language === option.value ? 'active' : ''}`}
+                onClick={() => setLanguage(option.value)}
+              >
+                {option.label}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <div className="actions">
+          <button type="submit" className="btn lg primary" disabled={busy}>
+            Register
+          </button>
+        </div>
       </form>
 
       {msg && (
@@ -504,106 +534,123 @@ export default function RegistrationFlow({ selectedPortal, onRegistrationComplet
   );
 
   const renderBatchForm = () => (
-    <div>
-      <h3 style={{ marginTop: 0 }}>Batch Registration</h3>
-      <div style={{ display: 'flex', gap: 8, marginBottom: 12 }}>
+    <div className="form-card">
+      <div className="left">
         <button type="button" className="btn" onClick={() => setCurrentStep('type-selection')}>Back</button>
       </div>
+      <div className="form-head">
+        <h3 className="form-title">Batch Registration</h3>
+        <div />
+      </div>
 
-      <form onSubmit={handleBatchSubmit}>
-        <label>Select Type</label>
-        <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginBottom: 12 }}>
-          {[
-            { value: "school", label: "School" },
-            { value: "university", label: "University" },
-            { value: "general", label: "General People" },
-          ].map((option) => (
-            <button
-              key={option.value}
-              type="button"
-              className={`btn ${batchType === option.value ? 'primary' : ''}`}
-              onClick={() => setBatchType(option.value)}
-            >
-              {option.label}
-            </button>
-          ))}
+      <form onSubmit={handleBatchSubmit} className="reg-form">
+        <div className="group">
+          <label className="group-label">Select Type</label>
+          <div className="chips">
+            {[
+              { value: "school", label: "School" },
+              { value: "university", label: "University" },
+              { value: "general", label: "General People" },
+            ].map((option) => (
+              <button
+                key={option.value}
+                type="button"
+                className={`chip ${batchType === option.value ? 'active' : ''}`}
+                onClick={() => setBatchType(option.value)}
+              >
+                {option.label}
+              </button>
+            ))}
+          </div>
         </div>
 
         {batchType === "school" && (
           <>
-            <label>Province</label>
-            <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginBottom: 12 }}>
-              {provinces.map((province) => (
-                <button
-                  key={province}
-                  type="button"
-                  className={`btn ${selectedProvince === province ? 'primary' : ''}`}
-                  onClick={() => setSelectedProvince(province)}
-                >
-                  {province}
-                </button>
-              ))}
+            <div className="group">
+              <label className="group-label">Province</label>
+              <div className="chips">
+                {provinces.map((province) => (
+                  <button
+                    key={province}
+                    type="button"
+                    className={`chip ${selectedProvince === province ? 'active' : ''}`}
+                    onClick={() => setSelectedProvince(province)}
+                  >
+                    {province}
+                  </button>
+                ))}
+              </div>
             </div>
-            
-            <SelectField
-              label="District"
-              options={districts.map((d) => ({ value: d, label: d }))}
-              value={selectedDistrict}
-              onChange={setSelectedDistrict}
-              disabled={!selectedProvince}
-            />
-            
-            <SearchableSelect
-              label="School"
-              options={schools}
-              value={selectedSchool}
-              onChange={setSelectedSchool}
-              disabled={!selectedDistrict}
-              placeholder="Search for a school..."
-            />
+
+            <div className="group">
+              <SelectField
+                label="District"
+                options={districts.map((d) => ({ value: d, label: d }))}
+                value={selectedDistrict}
+                onChange={setSelectedDistrict}
+                disabled={!selectedProvince}
+              />
+            </div>
+
+            <div className="group">
+              <SearchableSelect
+                label="School"
+                options={schools}
+                value={selectedSchool}
+                onChange={setSelectedSchool}
+                disabled={!selectedDistrict}
+                placeholder="Search for a school..."
+              />
+            </div>
           </>
         )}
 
         {batchType === "university" && (
-          <SearchableSelect
-            label="University"
-            options={universities}
-            value={selectedUniversity}
-            onChange={setSelectedUniversity}
-            placeholder="Search for a university..."
-          />
+          <div className="group">
+            <SearchableSelect
+              label="University"
+              options={universities}
+              value={selectedUniversity}
+              onChange={setSelectedUniversity}
+              placeholder="Search for a university..."
+            />
+          </div>
         )}
 
         {batchType === "general" && (
           <>
-            <label>Province</label>
-            <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginBottom: 12 }}>
-              {provinces.map((province) => (
-                <button
-                  key={province}
-                  type="button"
-                  className={`btn ${selectedProvince === province ? 'primary' : ''}`}
-                  onClick={() => setSelectedProvince(province)}
-                >
-                  {province}
-                </button>
-              ))}
+            <div className="group">
+              <label className="group-label">Province</label>
+              <div className="chips">
+                {provinces.map((province) => (
+                  <button
+                    key={province}
+                    type="button"
+                    className={`chip ${selectedProvince === province ? 'active' : ''}`}
+                    onClick={() => setSelectedProvince(province)}
+                  >
+                    {province}
+                  </button>
+                ))}
+              </div>
             </div>
-            
-            <SelectField
-              label="District"
-              options={districts.map((d) => ({ value: d, label: d }))}
-              value={selectedDistrict}
-              onChange={setSelectedDistrict}
-              disabled={!selectedProvince}
-            />
+
+            <div className="group">
+              <SelectField
+                label="District"
+                options={districts.map((d) => ({ value: d, label: d }))}
+                value={selectedDistrict}
+                onChange={setSelectedDistrict}
+                disabled={!selectedProvince}
+              />
+            </div>
           </>
         )}
 
         {batchType && (
-          <>
-            <label>Languages (Select up to 2)</label>
-            <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginBottom: 12 }}>
+          <div className="group">
+            <label className="group-label">Languages (Select up to 2)</label>
+            <div className="chips">
               {[
                 { value: "tamil", label: "Tamil" },
                 { value: "sinhala", label: "Sinhala" },
@@ -612,7 +659,7 @@ export default function RegistrationFlow({ selectedPortal, onRegistrationComplet
                 <button
                   key={option.value}
                   type="button"
-                  className={`btn ${selectedLanguages.includes(option.value) ? 'primary' : ''}`}
+                  className={`chip ${selectedLanguages.includes(option.value) ? 'active' : ''}`}
                   onClick={() => handleLanguageToggle(option.value)}
                   disabled={selectedLanguages.length >= 2 && !selectedLanguages.includes(option.value)}
                 >
@@ -620,12 +667,14 @@ export default function RegistrationFlow({ selectedPortal, onRegistrationComplet
                 </button>
               ))}
             </div>
-          </>
+          </div>
         )}
 
-        <button type="submit" className="btn lg primary" disabled={busy}>
-          Continue to RFID Count
-        </button>
+        <div className="actions">
+          <button type="submit" className="btn lg primary" disabled={busy}>
+            Continue to RFID Count
+          </button>
+        </div>
       </form>
 
       {msg && (

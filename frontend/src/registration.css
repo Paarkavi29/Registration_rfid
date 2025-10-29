@@ -1,0 +1,67 @@
+/* Registration type selection polish */
+.type-wrap { display: flex; justify-content: center; }
+.type-card {
+  background: var(--card);
+  border: 1px solid #273358;
+  border-radius: 16px;
+  padding: 20px 22px;
+  width: min(920px, 100%);
+}
+.type-head { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; }
+.type-head .left { justify-self: start; }
+.type-head .center { text-align: center; }
+.type-title { margin: 0; font-size: 20px; }
+
+.choice-list { display: grid; gap: 12px; margin: 16px auto 6px; max-width: 720px; }
+.choice {
+  display: grid; grid-template-columns: 1fr auto; row-gap: 2px;
+  padding: 16px 16px; text-align: left; border-radius: 12px;
+  background: #0f182d; border: 1px solid #2a375d; cursor: pointer; color:#e6eefc;
+  transition: transform .06s ease, background .15s ease, border-color .15s ease;
+}
+.choice:hover { background: #101c39; transform: translateY(-1px); }
+.choice.active { background: #0c2b55; border-color: #2674d6; box-shadow: 0 0 0 2px rgba(38,116,214,.25) inset; }
+.choice-title { font-weight: 700; }
+.choice-sub { color: var(--mut); font-size: 12px; grid-column: 1 / -1; }
+
+@media (max-width: 720px) {
+  .choice-list { max-width: 100%; }
+}
+
+/* Individual/Batch form polish */
+.form-card {
+  background: var(--card);
+  border: 1px solid #273358;
+  border-radius: 16px;
+  padding: 18px 20px;
+}
+.form-head { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; margin-bottom: 10px; }
+.form-title { margin: 0; font-size: 20px; text-align: center; }
+.form-head .left { justify-self: start; }
+.form-head .left .btn { 
+  padding: 6px 10px; 
+  font-size: 12px; 
+  line-height: 1; 
+  border-radius: 8px; 
+  display: inline-flex; 
+  align-items: center; 
+  background: #0e2247; 
+  border-color: #244a91;
+}
+.form-head .left .btn:hover { background: #102b5c; }
+.reg-form { display: grid; gap: 14px; }
+.group { display: grid; gap: 8px; }
+.group-label { font-weight: 700; }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip { 
+  padding: 10px 12px; 
+  border-radius: 999px; 
+  background: #0e1730; 
+  border: 1px solid #22365e; 
+  cursor: pointer; 
+  color:#e6eefc; 
+  transition: background .15s ease, border-color .15s ease, box-shadow .15s ease;
+}
+.chip:hover { background: #112040; border-color: #294a86; }
+.chip.active { background: #123063; border-color: #2a66d9; color: var(--pri); box-shadow: 0 0 0 2px rgba(38,102,217,.25) inset; }
+.actions { display: flex; justify-content: flex-end; margin-top: 6px; }

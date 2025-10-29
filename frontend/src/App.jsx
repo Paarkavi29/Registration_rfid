@@ -118,7 +118,7 @@ export default function App() {
         </section>
       </main>
 
-      <footer>Frontend <span className="mono">{import.meta.env.VITE_API_BASE}</span></footer>
+      {/* <footer>Frontend <span className="mono">{import.meta.env.VITE_API_BASE}</span></footer> */}
     </>
   );
 }
