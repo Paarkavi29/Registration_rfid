@@ -47,7 +47,18 @@ CREATE TABLE rfid_cards (
   CONSTRAINT rfid_cards_status_chk CHECK (LOWER(status) IN ('available','assigned'))
 );
 
+-- Users
+CREATE TABLE IF NOT EXISTS users (
+      id SERIAL PRIMARY KEY,
+      email TEXT UNIQUE NOT NULL,
+      password_hash TEXT NOT NULL,
+      full_name TEXT,
+      role TEXT DEFAULT 'user',
+      created_at TIMESTAMP NOT NULL DEFAULT NOW()
+)
+
 -- Indexes
 CREATE INDEX idx_registration_portal ON registration(portal);
 CREATE INDEX idx_members_portal_leader ON members(portal, registration_id);
 CREATE INDEX idx_logs_portal_card_time ON logs (portal, rfid_card_id, log_time);
+CREATE INDEX IF NOT EXISTS idx_users_email ON users(email);
