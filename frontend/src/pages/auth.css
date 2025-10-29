@@ -1,0 +1,58 @@
+/* Professional auth layout */
+.auth-layout {
+  display: grid;
+  grid-template-columns: 420px 1fr;
+  gap: 28px;
+  align-items: stretch;
+  min-height: 70vh;
+}
+
+.brand-pane {
+  background: linear-gradient(180deg, rgba(33, 44, 88, 0.7), rgba(15, 24, 45, 0.7));
+  border: 1px solid #273358;
+  border-radius: 16px;
+  padding: 28px;
+}
+.logo-circle {
+  width: 48px; height: 48px; border-radius: 50%;
+  display: grid; place-items: center;
+  background: #0c2b55; color: #cfe2ff; font-weight: 700;
+  border: 1px solid #2a375d; letter-spacing: 0.5px;
+}
+.brand-title { margin: 14px 0 6px; font-size: 22px; }
+.brand-subtitle { margin: 0 0 12px; color: var(--mut); }
+.brand-points { margin: 10px 0 0; padding-left: 18px; color: #c9d7f4; }
+.brand-points li { margin: 6px 0; }
+
+.auth-card {
+  background: var(--card);
+  border: 1px solid #273358;
+  border-radius: 16px;
+  padding: 24px 28px;
+  max-width: 560px;
+}
+
+.auth-header { margin-bottom: 14px; }
+.tabs { display: inline-flex; gap: 8px; }
+.tab { padding: 8px 12px; border-radius: 999px; background: #0f182d; border: 1px solid #2a375d; cursor: pointer; color: #e6eefc; }
+.tab.active { background: #0c2b55; border-color: #2674d6; color: var(--pri); }
+.mut { color: var(--mut); }
+
+.auth-form { display: grid; gap: 14px; }
+.field label { display: block; margin-bottom: 6px; font-weight: 600; }
+.field input { width: 100%; padding: 12px 12px; background: #0d1426; color:#e6eefc; border:1px solid #2a375d; border-radius:10px; }
+
+.pw-wrap { position: relative; }
+.pw-toggle { position: absolute; right: 8px; top: 50%; transform: translateY(-50%);
+  background: transparent; color: #9fb0d0; border: 0; cursor: pointer; font-size: 12px; }
+
+.auth-actions { margin-top: 6px; }
+
+.error { color: var(--err); background: #2b1010; border: 1px solid #b23333; padding: 8px 10px; border-radius: 8px; }
+.helper { font-size: 12px; }
+
+@media (max-width: 900px) {
+  .auth-layout { grid-template-columns: 1fr; }
+  .brand-pane { order: 2; }
+  .auth-card { order: 1; }
+}
