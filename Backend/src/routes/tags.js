@@ -36,6 +36,7 @@ async function syncRfidCardsFromLogs() {
 
 
 // ===================================================================
+//Paarkavi
 // POST /api/tags/updateCount
 // Update the group_size for the latest registration for a portal
 // ===================================================================
@@ -122,6 +123,7 @@ function handleError(res, err) {
   // Return the actual error message for server errors
   return res.status(500).json({ error: 'Server error: ' + msg });
 }
+
 
 // ---------- log query ----------
 // Helper: Get the latest available tag for a portal
