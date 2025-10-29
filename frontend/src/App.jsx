@@ -85,7 +85,7 @@ export default function App() {
   return (
     <>
       <header>
-        <h1 >Welcome to Registration Portal</h1>
+        {currentView !== 'rfid-log' && <h1>Welcome to Registration Portal</h1>}
         {/* <div className="pill">
           <span className="small">Health: {health}</span>
         </div> */}
