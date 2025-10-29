@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { api } from '../api';
 import '../form.css';
 
@@ -10,6 +10,8 @@ export default function RfidLogInput() {
   });
   const [msg, setMsg] = useState('');
   const [busy, setBusy] = useState(false);
+  const [cards, setCards] = useState([]);
+  const [loadingCards, setLoadingCards] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -55,6 +57,23 @@ export default function RfidLogInput() {
       setBusy(false);
     }
   };
+
+  const loadCards = async () => {
+    setLoadingCards(true);
+    try {
+      const data = await api('/api/tags/list-cards');
+      setCards(Array.isArray(data) ? data : []);
+    } catch (err) {
+      setMsg('❌ Failed to load cards: ' + err.message);
+      setCards([]);
+    } finally {
+      setLoadingCards(false);
+    }
+  };
+
+  useEffect(() => {
+    loadCards();
+  }, []);
 
   return (
     <div className="container" style={{ maxWidth: '500px', margin: '40px auto', padding: '20px' }}>
@@ -120,6 +139,40 @@ export default function RfidLogInput() {
           </div>
         )}
       </form>
+
+      <div style={{ marginTop: 28 }}>
+        <h3 style={{ marginBottom: 8 }}>Available RFID Cards</h3>
+        <div style={{ display: 'flex', gap: 8, alignItems: 'center', marginBottom: 12 }}>
+          <button className="btn" onClick={loadCards} disabled={loadingCards}>Refresh</button>
+          <div style={{ flex: 1 }} />
+          {loadingCards && <div className="mut">Loading…</div>}
+        </div>
+
+        <div style={{ overflowX: 'auto' }}>
+          <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+            <thead>
+              <tr>
+                <th style={{ textAlign: 'left', padding: '6px 8px', borderBottom: '1px solid #ddd' }}>Card ID</th>
+                <th style={{ textAlign: 'left', padding: '6px 8px', borderBottom: '1px solid #ddd' }}>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              {cards.length === 0 && (
+                <tr>
+                  <td colSpan={2} style={{ padding: '10px 8px', color: '#666' }}>No cards found</td>
+                </tr>
+              )}
+              {cards.map((c) => (
+                <tr key={c.rfid_card_id}>
+                  <td style={{ padding: '8px', borderBottom: '1px solid #f1f1f1' }}>{c.rfid_card_id}</td>
+                  <td style={{ padding: '8px', borderBottom: '1px solid #f1f1f1' }}>{c.status || '-'}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
     </div>
   );
 }
